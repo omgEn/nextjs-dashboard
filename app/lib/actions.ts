@@ -35,7 +35,6 @@ const FormSchema = z.object({
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 // ...
 export async function createInvoice(prevState: State, formData: FormData) {
-    console.log('createInvoice')
     const rawFormData = {
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
@@ -43,7 +42,6 @@ export async function createInvoice(prevState: State, formData: FormData) {
     };
     // 使用 safeParse 进行安全验证
     const validatedFields = CreateInvoice.safeParse(rawFormData);
-    console.log('validatedFields', validatedFields)
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
@@ -66,7 +64,6 @@ export async function createInvoice(prevState: State, formData: FormData) {
             message: 'Database Error: Failed to Create Invoice.',
         };
     }
-
     // Revalidate the cache for the invoices page and redirect the user.
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
@@ -110,7 +107,6 @@ export async function authenticate(
     formData: FormData,
 ) {
     try {
-        console.log('formData', formData)
         await signIn('credentials', formData);
     } catch (error) {
         if (error instanceof AuthError) {
